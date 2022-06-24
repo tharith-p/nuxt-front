@@ -93,6 +93,7 @@
   width: 100%;
   height: 2px;
   @apply bg-white;
+  
   border-radius: 5px;
   opacity: 0;
   bottom: 4px;
