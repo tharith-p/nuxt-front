@@ -5,13 +5,14 @@
         style="max-width: 650px"
         class="w-1/2 flex-1 mx-auto flex justify-center items-center px-5"
       >
-        <form action="" class="w-full text-white">
+        <form action="" @submit.prevent="submit" class="w-full text-white">
           <h1 class="text-3xl text-center mb-3">Sign in</h1>
-          <label for="username" class="text-xl block mb-2">User Name</label>
+          <label for="username" class="text-xl block mb-2">User Name{{username}}</label>
           <input
             type="text"
             name="username"
             id="username"
+            v-model="username"
             class="
               border-2
               text-xl
@@ -24,11 +25,12 @@
               px-5
             "
           />
-          <label for="password" class="text-xl block mb-2">Password</label>
+          <label for="password" class="text-xl block mb-2">Password{{password}}</label>
           <input
             type="password"
             name="password"
             id="password"
+            v-model="password"
             class="
               border-2
               text-xl
@@ -49,10 +51,12 @@
               shadow
               w-full
               py-2.5
-              hover:bg-opacity-70
+              bg-opacity-30
               transition-opacity
+               hover:bg-opacity-100
               mb-5
             "
+            :class="{'bg-opacity-100' : isValid}"
           >
             Login
           </button>
@@ -92,8 +96,8 @@
   position: absolute;
   width: 100%;
   height: 2px;
-  @apply bg-white;
-  
+  background-color: white;
+
   border-radius: 5px;
   opacity: 0;
   bottom: 4px;
@@ -111,5 +115,23 @@
 <script>
 export default {
   name: "Login",
+  data() {
+    return {
+      username: ''
+      , password: ''
+    }
+  },
+  computed: {
+    isValid() {
+      return this.username.trim() != '' && this.password.trim() != ''
+    }
+  },
+  methods: {
+    submit() {
+      console.log('Submit with params')
+      console.log('username', this.username)
+      console.log('password', this.password)
+    }
+  }
 };
 </script>
