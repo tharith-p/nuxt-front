@@ -1,18 +1,25 @@
 <template>
   <div class="bg-main">
     <div class="h-screen overflow-y-hidden flex flex-col">
+      <header class="absolute top-0 bg-main-400 flex items-center w-full py-5 text-white" style=" height: 70px;">
+        <div class="flex w-3/5 mx-auto text-xl text-white">
+          <div class="link hover:text-gray-400 transition-colors">Profile</div>
+          <div class="link hover:text-gray-400 transition-colors mx-auto">Group A's Project</div>
+          <div class="link hover:text-gray-400 transition-colors">Product list</div>
+        </div>
+      </header>
       <div
-        style="max-width: 650px"
+        style="max-width: 650px; padding-bottom: 70px; padding-top: 70px;"
         class="w-1/2 flex-1 mx-auto flex justify-center items-center px-5"
       >
         <form action="" @submit.prevent="submit" class="w-full text-white">
           <h1 class="text-3xl text-center mb-3">Sign in</h1>
-          <label for="username" class="text-xl block mb-2">User Name</label>
+          <label for="proName" class="text-xl block mb-2">Product Name</label>
           <input
             type="text"
-            name="username"
-            id="username"
-            v-model="username"
+            name="proName"
+            id="proName"
+            v-model="proName"
             class="
               border-2
               text-xl
@@ -25,12 +32,48 @@
               px-5
             "
           />
-          <label for="password" class="text-xl block mb-2">Password</label>
+          <label for="numPro" class="text-xl block mb-2">Number of product</label>
           <input
-            type="password"
-            name="password"
-            id="password"
-            v-model="password"
+            type="text"
+            name="numPro"
+            id="numPro"
+            v-model="numPro"
+            class="
+              border-2
+              text-xl
+              border-black
+              bg-transparent
+              rounded
+              w-full
+              mb-3
+              py-2
+              px-5
+            "
+          />
+          <label for="size" class="text-xl block mb-2">Size</label>
+          <input
+            type="text"
+            name="size"
+            id="size"
+            v-model="size"
+            class="
+              border-2
+              text-xl
+              border-black
+              bg-transparent
+              rounded
+              w-full
+              mb-3
+              py-2
+              px-5
+            "
+          />
+          <label for="code" class="text-xl block mb-2">code</label>
+          <input
+            type="text"
+            name="code"
+            id="code"
+            v-model="code"
             class="
               border-2
               text-xl
@@ -43,6 +86,7 @@
               px-5
             "
           />
+
           <button
             type="submit"
             class="
@@ -69,7 +113,7 @@
           </div>
         </form>
       </div>
-      <footer class="absolute bottom-0 bg-main-400 block w-full py-5">
+      <footer class="absolute bottom-0 bg-main-400 flex items-center w-full py-5" style=" height: 70px;">
         <ul class="flex space-x-4 w-3/5 mx-auto text-xl text-white">
           <li>
             <a href="" class="link hover:text-gray-400 transition-colors"
@@ -89,23 +133,26 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "Dashboard",
   data() {
     return {
-      username: ''
-      , password: ''
+      proName: ""
+      , numPro: ""
+      , size: ""
+      , code: ""
     }
   },
   computed: {
     isValid() {
-      return this.username.trim() != '' && this.password.trim() != ''
+      return this.proName.trim() != ''  &&
+        this.numPro.trim() != ''        &&
+        this.size.trim() != ''          &&
+        this.code.trim() != '';
     }
   },
   methods: {
     submit() {
-      console.log('Submit with params')
-      console.log('username', this.username)
-      console.log('password', this.password)
+      console.log('Submit')
     }
   }
 };
