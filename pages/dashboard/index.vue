@@ -75,7 +75,7 @@
             <div class="flex items-center justify-between w-1/2 ml-auto mb-3">
               <span>Cash Receive($)</span>
               <div class=" relative">
-                <input type="number" v-model="cashReceive"
+                <input type="text" v-model="cashReceive"
                   class=" w-40 border rounded bg-transparent text-right py-4 pr-1 pl-5"
                   :class="{'border-red-500 text-red-500' : subTotal > cashReceive && cashReceive != 0}"
                   placeholder="Cash Receive">
@@ -88,8 +88,7 @@
               <span>$ {{ (cashReceive - subTotal).toFixed(2) }}</span>
             </div>
             <button @click="isShowModal = true" :disabled="!isCheckoutable" :class="{' bg-opacity-50': !isCheckoutable}"
-              class=" transition-opacity ml-auto rounded px-8 bg-blue-dark shadow-sm text-white py-2 mt-3">Check
-              Out</button>
+              class=" transition-opacity ml-auto rounded px-8 bg-blue-dark shadow-sm text-white py-2 mt-3">Preview invoice</button>
           </div>
         </div>
       </div>
@@ -153,22 +152,22 @@
               </tbody>
             </table>
           </div>
-          <div class="flex flex-col items-end text-gray-700 px-6 pb-6">
-            <div>
-              <span>Grand Total($)</span>
-              <span>$ {{ subTotal.toFixed(2) }}</span>
+          <div class="flex flex-col items-end text-gray-700 px-6 pb-6 dark:text-white">
+            <div class="flex">
+              <span>Grand Total($) :</span>
+              <span class="w-20 text-right">{{ subTotal.toFixed(2) }}</span>
             </div>
-            <div>
-              <span>Tax(%)</span>
-              <span>10%</span>
+            <div class="flex">
+              <span>Tax(%) :</span>
+              <span class="w-20 text-right">10%</span>
             </div>
-            <div>
-              <span>Cash Receive($)</span>
-              <span>$ {{ cashReceive.toFixed(2) }}</span>
+            <div class="flex">
+              <span>Cash Receive($) :</span>
+              <span class="w-20 text-right">{{ parseFloat(cashReceive).toFixed(2) }}</span>
             </div>
-            <div>
-              <span>Charge($)</span>
-              <span>$ {{ (cashReceive - subTotal).toFixed(2) }}</span>
+            <div class="flex">
+              <span>Charge($) :</span>
+              <span class="w-20 text-right">{{ (cashReceive - subTotal).toFixed(2) }}</span>
             </div>
           </div>
           <!-- Modal footer -->
@@ -325,19 +324,19 @@ export default {
       this.isShowModal = false;
       this.isCheckingOut = true;
       let params = this.addedPros.map(pro => ({
-        id: pro
-        , qty: pro.count
+        id    : pro
+        , qty : pro.count
       }));
       setTimeout(() => {
         this.isCheckingOut  = false;
-        alert('success')
+        alert('Check out successfully.')
         // clear
         this.isShowModal  = false;
         this.activeProId  = 0;
         this.activePro    = undefined;
         this.cashReceive  = 0;
         this.addedPros    = [];
-      }, 2000);
+      }, 500);
     }
   },
   async fetch() {
