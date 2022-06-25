@@ -93,6 +93,10 @@
         </div>
       </div>
     </div>
+
+    <div id="defaultModal" tabindex="-1" aria-hidden="true" v-if="isCheckingOut" class=" bg-black bg-opacity-60 overflow-hidden fixed z-50 w-full inset-0 flex justify-center items-center">
+      <div class=" text-white">loading</div>
+    </div>
     <!-- Main modal -->
     <div id="defaultModal" tabindex="-1" aria-hidden="true" v-if="isShowModal"
       class=" bg-black bg-opacity-60 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 w-full md:inset-0 md:h-full flex justify-center items-center">
@@ -160,7 +164,7 @@
           <!-- Modal footer -->
           <div
             class="flex justify-end items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-            <button data-modal-toggle="defaultModal" type="button" @click="isShowModal = false"
+            <button data-modal-toggle="defaultModal" type="button" @click="checkOut"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
               accept</button>
             <button data-modal-toggle="defaultModal" type="button" @click="isShowModal = false"
@@ -306,9 +310,18 @@ export default {
       //   }
       // );
     },
-    checkingOut() {
-      this.addedPros.map(pro => ({}))
-      console.log()
+    checkOut() {
+      this.isShowModal = false;
+      this.isCheckingOut = true;
+      let params = this.addedPros.map(pro => ({
+        id: pro
+        , qty: pro.count
+      }));
+      console.log('params', params)
+      setTimeout(() => {
+        this.isCheckingOut  = false;
+        alert('success')
+      }, 2000);
     }
   },
   async fetch() {
