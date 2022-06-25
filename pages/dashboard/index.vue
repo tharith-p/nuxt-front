@@ -28,7 +28,7 @@
                 <span class=" text-white">{{ pro.productname }}</span>
                 <small class=" text-gray-300">{{ pro.description }}</small>
               </div>
-              <Dropdown :id="pro.id" />
+              <Dropdown :id="pro.id" @remove="remove" />
             </div>
             <!-- End product list -->
           </div>
@@ -258,6 +258,9 @@ export default {
     }
   },
   methods: {
+    remove(id) {
+      console.log('remove', id)
+    },
     setProActive(id) {
 
       if (this.activeProId != id) {
