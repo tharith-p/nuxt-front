@@ -1,7 +1,9 @@
 <template>
   <div class="bg-main">
     <div class="h-screen overflow-hidden flex flex-col">
-      <header class=" h-14 bg-main-400 sticky top-0">this is header</header>
+      <header class=" h-14 bg-main-400 sticky top-0 flex items-center">
+        <NuxtLink to="/item/add" class="link ml-5 text-white">Add Product</NuxtLink>
+      </header>
       <div class=" flex-1 flex overflow-y-hidden">
 
         <div class="h-full flex flex-col overflow-y-auto" style="width: 400px">
@@ -145,9 +147,9 @@
                     <span class="">{{ addedPro.name }}</span>
                     <small class=" ">{{ addedPro.desc }}</small>
                   </th>
-                  <th class="py-1">{{ addedPro.count }}</th>
-                  <th class="py-1">{{ addedPro.price.toFixed(2) }}</th>
-                  <th class="py-1">{{ (addedPro.count * addedPro.price).toFixed(2) }}</th>
+                  <th class="py-1 text-center">{{ addedPro.count }}</th>
+                  <th class="py-1 text-right">{{ addedPro.price.toFixed(2) }}</th>
+                  <th class="py-1 text-right">{{ (addedPro.count * addedPro.price).toFixed(2) }}</th>
                 </tr>
               </tbody>
             </table>
