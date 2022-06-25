@@ -18,7 +18,7 @@
           <div class="flex-1">
             <!-- Product list -->
             <div tabindex="0" @keypress="keypress" @click="setProActive(pro.id)" v-for="pro in products" :key="pro.id"
-              class="py-1 px-5 flex items-center cursor-pointer space-x-3"
+              class="group py-1 px-5 flex items-center cursor-pointer space-x-3 group"
               :class="{' bg-gray-400': activeProId == pro.id}">
               <img class=" transform hover:scale-110 transition-all w-10 rounded object-cover h-10" :src="pro.photo"
                 alt="">
@@ -26,6 +26,7 @@
                 <span class=" text-white">{{ pro.productname }}</span>
                 <small class=" text-gray-300">{{ pro.description }}</small>
               </div>
+              <Dropdown :id="pro.id" />
             </div>
             <!-- End product list -->
           </div>
@@ -382,5 +383,9 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.group:hover .group-hover\:block {
+  display: block;
 }
 </style>
