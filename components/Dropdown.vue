@@ -5,7 +5,7 @@
     </svg>
     <Transition name="fade">
       <div v-if="isShowDowndown" class="absolute top-full right-0 bg-gray-700 rounded py-1">
-        <NuxtLink class="py-1 px-5 text-white hover:bg-gray-600" :to="'/item/edit?id=' + id">Edit{{id}}</NuxtLink>
+        <NuxtLink class="py-1 px-5 text-sm text-white hover:bg-gray-600" :to="'/item/edit?id=' + id">Edit{{id}}</NuxtLink>
       </div>
     </Transition>
   </div>

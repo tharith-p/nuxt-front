@@ -140,7 +140,7 @@
               </thead>
               <tbody>
                 <tr v-for="(addedPro, index) in addedPros" :key="addedPro.id"
-                  class="text-left text-gray-600 bg-opacity-5">
+                  class="text-left dark:text-white text-gray-600 bg-opacity-5">
                   <th class="py-1">{{ index + 1 }}</th>
                   <th class="py-1 flex flex-col">
                     <span class="">{{ addedPro.name }}</span>
@@ -194,7 +194,8 @@ export default {
       isShowModal: false,
       activeProId : 0,
       activePro   : undefined,
-      products  : [
+      products: [],
+      products1  : [
         {
           "id": 1,
           "productname": "coca1",
@@ -327,10 +328,15 @@ export default {
         id: pro
         , qty: pro.count
       }));
-      console.log('params', params)
       setTimeout(() => {
         this.isCheckingOut  = false;
         alert('success')
+        // clear
+        this.isShowModal  = false;
+        this.activeProId  = 0;
+        this.activePro    = undefined;
+        this.cashReceive  = 0;
+        this.addedPros    = [];
       }, 2000);
     }
   },
@@ -338,11 +344,24 @@ export default {
     // 
     // const products = await this.$axios.$get('http://51.79.251.248/:8081/product')
     // 
-    const products = await this.$axios.$get('http://192.168.11.101:8081/product')
-    // console.log()
-    // this.products = products;
-    console.log('products', products);
-
+    const res = await this.$axios.$get('http://localhost:8081/product');
+    if (res.success) {
+      // modify response
+      let imgs = [
+        "/nike.avif",
+        "akram.jpeg",
+        "poo.jpg"
+      ];
+      let imgi = 0;
+      this.products = res.data.map( d => {
+        imgi += 1;
+        if (imgi >= 3) {
+          imgi = 0;
+        }
+        d.photo = imgs[imgi];
+        return d
+      });
+    }
   },
   mounted() {
   },

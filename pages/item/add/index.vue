@@ -14,7 +14,7 @@
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Price -->
           <label for="price" class="text-xl block mb-2">Price per unit($)</label>
-          <input type="number" name="price" id="price" v-model="price"
+          <input type="text" step="0.01" name="price" id="price" v-model="price"
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Size -->
           <label for="size" class="text-xl block mb-2">Size</label>
@@ -22,7 +22,7 @@
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Qty -->
           <label for="qty" class="text-xl block mb-2">Number of product</label>
-          <input type="number" name="qty" id="qty" v-model="qty"
+          <input type="text" name="qty" id="qty" v-model="qty"
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Submit button -->
           <button type="submit"
@@ -83,30 +83,42 @@ export default {
         console.error(error)
         return false
       }
+    },
+    add() {
+      let params = {
+        proName: this.proName.trim(),
+        desc: this.desc.trim(),
+        size: this.size.trim(),
+        price: parseFloat(this.price),
+        qty: parseInt(qty),
+      }
+      console.log('params', params)
     }
   },
   methods: {
-    submit() {
-      let params = {
-        proName : this.proName.trim(),
-        desc  : this.desc.trim(),
-        size  : this.size.trim(),
-        price : parseFloat(this.price),
-        qty   : parseInt(this.qty)
-      }
-      console.log('params', params)
+    async submit() {
       this.requesting = true;
-      setTimeout(() => {
-        this.requesting = false;
-        alert('success')
-
-        // clear form
-        this.proName = '';
-        this.desc = '';
-        this.size = '';
-        this.price = 0;
-        this.qty = 0;
-      }, 2000);
+      let params = {
+        "productname": this.proName.trim(),
+        "description": this.desc.trim(),
+        "price": parseFloat(this.price),
+        "tax": 0.0,
+        "size": this.size.trim(),
+        "quantity": parseInt(qty)
+      };
+      let res = await this.$axios.$post(
+        'http://localhost:8081/product'
+        , params
+      );
+      this.requesting = false;
+      console.log('res', res)
+      alert('Item has been add successfully.');
+      // clear form
+      this.proName = '';
+      this.desc = '';
+      this.size = '';
+      this.price = 0;
+      this.qty = 0;
     }
   }
 };
