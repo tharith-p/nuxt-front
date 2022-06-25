@@ -2,7 +2,7 @@
   <div class="bg-main">
     <div class="h-screen overflow-y-hidden flex flex-col">
       <div style="max-width: 650px" class="w-1/2 flex-1 mx-auto flex justify-center items-center px-5">
-        <form action="" @submit.prevent="submit" class="w-full text-white">
+        <form action="" @submit.prevent="add" class="w-full text-white">
           <h1 class="text-3xl text-center mb-3">Add Product</h1>
           <!-- Name -->
           <label for="proName" class="text-xl block mb-2">Product Name</label>
@@ -62,11 +62,11 @@ export default {
   name: "Login",
   data() {
     return {
-      proName: '',
-      desc: '',
-      size: '',
-      price: 0,
-      qty: 0,
+      proName   : '',
+      desc      : '',
+      size      : '',
+      price     : 0,
+      qty       : 0,
       requesting: false
 
     }
@@ -84,41 +84,41 @@ export default {
         return false
       }
     },
-    add() {
-      let params = {
-        proName: this.proName.trim(),
-        desc: this.desc.trim(),
-        size: this.size.trim(),
-        price: parseFloat(this.price),
-        qty: parseInt(qty),
-      }
-      console.log('params', params)
-    }
+    
   },
   methods: {
-    async submit() {
-      this.requesting = true;
-      let params = {
-        "productname": this.proName.trim(),
-        "description": this.desc.trim(),
-        "price": parseFloat(this.price),
-        "tax": 0.0,
-        "size": this.size.trim(),
-        "quantity": parseInt(qty)
-      };
-      let res = await this.$axios.$post(
-        'http://localhost:8081/product'
-        , params
-      );
-      this.requesting = false;
-      console.log('res', res)
-      alert('Item has been add successfully.');
-      // clear form
-      this.proName = '';
-      this.desc = '';
-      this.size = '';
-      this.price = 0;
-      this.qty = 0;
+    async add() {
+      try {
+        let params = {
+          productname : this.proName.trim(),
+          description : this.desc.trim(),
+          size        : this.size.trim(),
+          price       : parseFloat(this.price),
+          quantity    : parseInt(this.qty),
+          tax         : 0.1
+        };
+        this.requesting = true;
+        let res = await this.$axios.$post(
+          'http://localhost:8081/product'
+          , params
+        );
+        this.requesting = false;
+        if (res.success) {
+          alert('Product has add successfully.');
+          this.$router.push('/dashboard');
+          // Clear form
+          this.proName = '';
+          this.desc = '';
+          this.size = '';
+          this.price = 0;
+          this.qty = 0;
+        } else {
+          alert('Something went wrong.')
+        }
+      } catch (error) {
+        this.requesting = false;
+        console.log('error')
+      }
     }
   }
 };

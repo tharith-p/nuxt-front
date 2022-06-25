@@ -3,7 +3,7 @@
     <div class="h-screen overflow-y-hidden flex flex-col">
       <div style="max-width: 650px" class="w-1/2 flex-1 mx-auto flex justify-center items-center px-5">
         <form action="" @submit.prevent="submit" class="w-full text-white">
-          <h1 class="text-3xl text-center mb-3">Add Product</h1>
+          <h1 class="text-3xl text-center mb-3">Edit Product</h1>
           <!-- Name -->
           <label for="proName" class="text-xl block mb-2">Product Name</label>
           <input type="text" name="proName" id="proName" v-model="proName"
@@ -14,7 +14,7 @@
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Price -->
           <label for="price" class="text-xl block mb-2">Price per unit($)</label>
-          <input type="number" name="price" id="price" v-model="price"
+          <input type="text" name="price" id="price" v-model="price"
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Size -->
           <label for="size" class="text-xl block mb-2">Size</label>
@@ -22,12 +22,12 @@
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Qty -->
           <label for="qty" class="text-xl block mb-2">Number of product</label>
-          <input type="number" name="qty" id="qty" v-model="qty"
+          <input type="text" name="qty" id="qty" v-model="qty"
             class="border-2 text-xl border-black bg-transparent rounded w-full mb-3 py-2 px-5" />
           <!-- Submit button -->
           <button type="submit"
             class=" bg-blue-dark text-xl shadow w-full py-2.5 bg-opacity-30 transition-opacity hover:bg-opacity-100 mb-5"
-            :class="{'bg-opacity-100' : isValid}">Add</button>
+            :class="{'bg-opacity-100' : isValid}">Update</button>
         </form>
       </div>
       <footer class="absolute bottom-0 bg-main-400 block w-full py-5">
@@ -59,26 +59,25 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "AddProduct",
   data() {
     return {
-      proName: '',
-      desc: '',
-      size: '',
-      price: 0,
-      qty: 0,
+      proName   : '',
+      desc      : '',
+      size      : '',
+      price     : 0,
+      qty       : 0,
       requesting: false
-
     }
   },
   computed: {
     isValid() {
       try {
         return this.proName.trim() != '' &&
-        this.desc.trim() != '' &&
-        this.size.trim() != '' &&
-        parseFloat(this.price) > 0 &&
-        parseInt(this.qty) > 0
+          this.desc.trim() != '' &&
+          this.size.trim() != '' &&
+          parseFloat(this.price) > 0 &&
+          parseInt(this.qty) > 0
       } catch (error) {
         console.error(error)
         return false
@@ -86,38 +85,56 @@ export default {
     }
   },
   methods: {
-    submit() {
+    async submit() {
       let params = {
-        proName : this.proName.trim(),
-        desc  : this.desc.trim(),
-        size  : this.size.trim(),
-        price : parseFloat(this.price),
-        qty   : parseInt(this.qty)
-      }
-      console.log('params', params)
-      this.requesting = true;
-      setTimeout(() => {
-        this.requesting = false;
-        alert('success')
+        "productname": this.proName.trim(),
+        "description": this.desc.trim(),
+        "price": parseFloat(this.price),
+        "size": this.size.trim(),
+        "quantity": parseInt(this.qty),
+        "tax": 0.1
+      };
 
-        // clear form
-        this.proName = '';
-        this.desc = '';
-        this.size = '';
-        this.price = 0;
-        this.qty = 0;
-      }, 2000);
+      this.requesting = true;
+      let res = await this.$axios.$put(
+        'http://localhost:8081/product/' + this.id
+        , params
+      );
+      console.log('res', res);
+
+      this.requesting = false;
+      if (res.success) {
+        // redirect to dashboard
+        this.$router.push('/dashboard');
+      } else {
+        alert('Something went wrong.')
+      }
     }
   },
-  mounted() {
+  async mounted() {
     // get id
-    let id = this.$route.query.id;
-    this.id = parseInt(id);
-    this.requesting = true;
-    setTimeout(() => {
+    try {
+      let id = this.$route.query.id;
+      this.id = parseInt(id);
+      this.requesting = true;
+      let res = await this.$axios.$get(
+        'http://localhost:8081/product/' + id
+      );
       this.requesting = false;
-      alert('success')
-    }, 2000);
+      if (res.success) {
+        this.proName   = res.data.productname;
+        this.desc      = res.data.description;
+        this.size      = res.data.size;
+        this.price     = parseFloat(res.data.price);
+        this.qty       = res.data.quantity;
+      } else {
+        alert('Product not found')
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Product not found')
+      this.requesting = false;
+    }
   }
 };
 </script>
